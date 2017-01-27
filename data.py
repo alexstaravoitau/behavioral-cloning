@@ -19,8 +19,19 @@ def preprocess(image):
     #     warnings.simplefilter("ignore")
     #     image = exposure.equalize_hist(image)
     return image - 0.5
+def rgb2ycbcr(im):
+    xform = np.array([[.299, .587, .114], [-.1687, -.3313, .5], [.5, -.4187, -.0813]])
+    ycbcr = im.dot(xform.T)
+    ycbcr[:,:,[1, 2]] += 0.5
+    return np.float32(ycbcr)
 
-def generate_samples(data, root_path):
+def ycbcr2rgb(im):
+    xform = np.array([[1, 0, 1.402], [1, -0.34414, -.71414], [1, 1.772, 0]])
+    rgb = im.astype(np.float)
+    rgb[:,:,[1, 2]] -= 0.5
+    return np.float32(rgb.dot(xform.T))
+
+def generate_samples(data, root_path, augment=True):
     while 1:
         # Generate random batch of indices
         indices = np.random.permutation(data.count()[0])
