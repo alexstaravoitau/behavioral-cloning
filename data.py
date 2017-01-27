@@ -8,7 +8,7 @@ import os
 
 # Cameras we will use
 cameras = ['left', 'center', 'right']
-cameras_steering_correction = [0.2, 0., -0.2]
+cameras_steering_correction = [0.25, 0., -0.25]
 
 def preprocess(image):
     top = int((60 / 160) * image.shape[0])
