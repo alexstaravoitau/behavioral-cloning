@@ -1,4 +1,6 @@
 import numpy as np
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 import tensorflow as tf
 tf.python.control_flow_ops = tf
 from keras.models import Sequential
@@ -7,7 +9,6 @@ from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
 from sklearn import model_selection
 from pandas.io import parsers
-import os
 from data import generate_samples, preprocess
 
 
