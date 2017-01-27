@@ -42,8 +42,8 @@ def generate_samples(data, root_path, augment=True):
             for i in batch_indices:
                 # Randomly select camera
                 #camera = np.random.choice(len(cameras), p=[.25, .5, .25])
-                camera = np.random.randint(len(cameras))
-                # Read and preprocess image + steering angle
+                camera = np.random.randint(len(cameras)) if augment else 1
+                # Read frame image and work out steering angle
                 image = mpimg.imread(os.path.join(root_path, data[cameras[camera]].values[i].strip()))
                 angle = data.steering.values[i] + cameras_steering_correction[camera]
                 # Append to batch
