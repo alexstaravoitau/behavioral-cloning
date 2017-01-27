@@ -15,9 +15,9 @@ def preprocess(image):
     bottom = int((20 / 160) * image.shape[0])
     image = image[top:-bottom, :]
     image = transform.resize(image, (66, 200, 3))
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        image = exposure.equalize_hist(image)
+    # with warnings.catch_warnings():
+    #     warnings.simplefilter("ignore")
+    #     image = exposure.equalize_hist(image)
     return image - 0.5
 
 def generate_samples(data, root_path):
