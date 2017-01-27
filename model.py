@@ -7,6 +7,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
+from keras import backend
 from sklearn import model_selection
 from pandas.io import parsers
 from data import generate_samples, preprocess
@@ -52,4 +53,6 @@ if __name__ == '__main__':
     model.save_weights(os.path.join(local_project_path, 'behavioral_cloning.h5'))
     with open(os.path.join(local_project_path, 'behavioral_cloning.json'), 'w') as file:
         file.write(model.to_json())
+
     print('Model saved.')
+    backend.clear_session()
