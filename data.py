@@ -46,6 +46,11 @@ def generate_samples(data, root_path, augment=True):
                 # Read frame image and work out steering angle
                 image = mpimg.imread(os.path.join(root_path, data[cameras[camera]].values[i].strip()))
                 angle = data.steering.values[i] + cameras_steering_correction[camera]
+                if augment:
+                    # Add random shadow
+                    x1, y1 = random.randint(0, image.shape[1]), random.randint(0, image.shape[0])
+                    x2, y2 = random.randint(x1, image.shape[1]), random.randint(y1, image.shape[0])
+                    image[y1:y2, x1:x2, :] = (image[y1:y2, x1:x2, :] * .5).astype(np.int32)
                 # Append to batch
                 x = np.append(x, [preprocess(image)], axis=0)
                 y = np.append(y, [angle])
