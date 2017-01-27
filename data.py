@@ -51,8 +51,12 @@ def generate_samples(data, root_path, augment=True):
                     x1, y1 = random.randint(0, image.shape[1]), random.randint(0, image.shape[0])
                     x2, y2 = random.randint(x1, image.shape[1]), random.randint(y1, image.shape[0])
                     image[y1:y2, x1:x2, :] = (image[y1:y2, x1:x2, :] * .5).astype(np.int32)
+                    # Randomly shift up and down while preprocessing
+                top = random.uniform(.375 - .075, .375 + .075) if augment else .375
+                bottom = random.uniform(.125 - .075, .125 + 0.075) if augment else .125
+                image = preprocess(image, top_offset=top, bottom_offset=bottom)
                 # Append to batch
-                x = np.append(x, [preprocess(image)], axis=0)
+                x = np.append(x, [image], axis=0)
                 y = np.append(y, [angle])
             # Randomly flip half of images in the batch
             flip_indices = random.sample(range(x.shape[0]), int(x.shape[0] / 2))
