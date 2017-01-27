@@ -6,6 +6,10 @@ import warnings
 import os
 
 
+# Cameras we will use
+cameras = ['left', 'center', 'right']
+cameras_steering_correction = [0.2, 0., -0.2]
+
 def preprocess(image):
     top = int((60 / 160) * image.shape[0])
     bottom = int((20 / 160) * image.shape[0])
@@ -21,10 +25,6 @@ def generate_samples(data, root_path):
         # Output arrays
         x = np.empty([0, 66, 200, 3], dtype=np.float32)
         y = np.empty([0], dtype=np.float32)
-        # Cameras we will use
-        cameras = ['left', 'center', 'right']
-        cameras_steering_correction = [0.25, 0., -0.25]
-
         # Generate random batch of indices
         batch_indices = random.sample(range(data.count()[0]), 128)
         # Read in and preprocess a batch of images
