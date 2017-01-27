@@ -7,6 +7,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
+from keras.callbacks import EarlyStopping
 from keras import backend
 from sklearn import model_selection
 from pandas.io import parsers
@@ -45,9 +46,11 @@ if __name__ == '__main__':
     history = model.fit_generator(
         generate_samples(df_train, local_data_path),
         samples_per_epoch=df_train.count()[0],
-        nb_epoch=20,
-        validation_data=generate_samples(df_valid, local_data_path),
-        nb_val_samples=df_valid.count()[0]
+        nb_epoch=100,
+        validation_data=generate_samples(df_valid, local_data_path, augment=False),
+        nb_val_samples=df_valid.count()[0],
+        callbacks=[ProgbarLogger(), EarlyStopping(patience=5)],
+        verbose=0
     )
 
     model.save_weights(os.path.join(local_project_path, 'behavioral_cloning.h5'))
