@@ -10,15 +10,6 @@ import os
 cameras = ['left', 'center', 'right']
 cameras_steering_correction = [0.25, 0., -0.25]
 
-def preprocess(image):
-    top = int((60 / 160) * image.shape[0])
-    bottom = int((20 / 160) * image.shape[0])
-    image = image[top:-bottom, :]
-    image = transform.resize(image, (66, 200, 3))
-    # with warnings.catch_warnings():
-    #     warnings.simplefilter("ignore")
-    #     image = exposure.equalize_hist(image)
-    return image - 0.5
 def rgb2ycbcr(im):
     xform = np.array([[.299, .587, .114], [-.1687, -.3313, .5], [.5, -.4187, -.0813]])
     ycbcr = im.dot(xform.T)
@@ -30,6 +21,12 @@ def ycbcr2rgb(im):
     rgb = im.astype(np.float)
     rgb[:,:,[1, 2]] -= 0.5
     return np.float32(rgb.dot(xform.T))
+
+def preprocess(image, top_offset=0.375, bottom_offset=0.125):
+    top = int(top_offset * image.shape[0])
+    bottom = int(bottom_offset * image.shape[0])
+    image = transform.resize(image[top:-bottom, :], (66, 200, 3))
+    return rgb2ycbcr(image)
 
 def generate_samples(data, root_path, augment=True):
     while 1:
