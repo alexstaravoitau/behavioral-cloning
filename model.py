@@ -42,6 +42,8 @@ if __name__ == '__main__':
     model.add(Dropout(0.1))
     model.add(Dense(10, activation='relu'))
     model.add(Dense(1))
+    #model.load_weights(os.path.join(local_project_path, 'behavioral_cloning.h5'))
+
     model.compile(optimizer=Adam(lr=0.0001), loss='mean_squared_error')
 
     history = model.fit_generator(
