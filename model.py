@@ -47,10 +47,10 @@ if __name__ == '__main__':
     history = model.fit_generator(
         generate_samples(df_train, local_data_path),
         samples_per_epoch=df_train.count()[0],
-        nb_epoch=100,
+        nb_epoch=10,
         validation_data=generate_samples(df_valid, local_data_path, augment=False),
         nb_val_samples=df_valid.count()[0],
-        callbacks=[ProgbarLogger(), EarlyStopping(patience=5)],
+        callbacks=[ProgbarLogger()],
         verbose=0
     )
 
