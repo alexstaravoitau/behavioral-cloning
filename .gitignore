@@ -92,3 +92,6 @@ ENV/
 /data
 *.h5
 *.json
+*.ipynb
+/weights_history
+/alt_keras_logging.py
