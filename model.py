@@ -37,19 +37,19 @@ if __name__ == '__main__':
     model.add(Dense(1164, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(100, activation='relu'))
-    model.add(Dropout(0.25))
+    model.add(Dropout(0.5))
     model.add(Dense(50, activation='relu'))
-    model.add(Dropout(0.1))
+    model.add(Dropout(0.5))
     model.add(Dense(10, activation='relu'))
     model.add(Dense(1))
     #model.load_weights(os.path.join(local_project_path, 'behavioral_cloning.h5'))
 
-    model.compile(optimizer=Adam(lr=0.0001), loss='mean_squared_error')
+    model.compile(optimizer=Adam(lr=1e-04), loss='mean_squared_error')
 
     history = model.fit_generator(
         generate_samples(df_train, local_data_path),
         samples_per_epoch=df_train.count()[0],
-        nb_epoch=10,
+        nb_epoch=50,
         validation_data=generate_samples(df_valid, local_data_path, augment=False),
         nb_val_samples=df_valid.count()[0],
         callbacks=[ProgbarLogger()],
