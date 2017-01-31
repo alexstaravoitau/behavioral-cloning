@@ -51,7 +51,6 @@ if __name__ == '__main__':
         callbacks=[WeightsLogger(root_path=local_project_path)]
     )
 
-    model.save_weights(os.path.join(local_project_path, 'model.h5'))
     with open(os.path.join(local_project_path, 'model.json'), 'w') as file:
         file.write(model.to_json())
 

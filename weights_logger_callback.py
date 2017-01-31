@@ -12,4 +12,4 @@ class WeightsLogger(Callback):
         os.makedirs(self.weights_root_path, exist_ok=True)
 
     def on_epoch_end(self, epoch, logs={}):
-        self.model.save_weights(os.path.join(self.weights_root_path, 'epoch_{}.h5'.format(epoch + 1)))
+        self.model.save_weights(os.path.join(self.weights_root_path, 'model_epoch_{}.h5'.format(epoch + 1)))
