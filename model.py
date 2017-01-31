@@ -7,10 +7,9 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Activation, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
-from keras.callbacks import EarlyStopping
 from keras.optimizers import Adam
 from keras import backend
-from sklearn import model_selection
+from sklearn.model_selection import train_test_split
 from pandas.io import parsers
 from data import generate_samples, preprocess
 from weights_logger_callback import WeightsLogger
@@ -26,7 +25,7 @@ if __name__ == '__main__':
     # Filter out frames with steering angles close to 0
     df = df[np.absolute(df.steering) > 0.001]
     # Split data into training and validation sets
-    df_train, df_valid = model_selection.train_test_split(df, test_size=0.2)
+    df_train, df_valid = train_test_split(df, test_size=0.2)
 
     model = Sequential()
     model.add(Convolution2D(24, 5, 5, subsample=(2, 2), input_shape=(66, 200, 3), activation='relu'))
