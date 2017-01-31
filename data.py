@@ -8,7 +8,7 @@ import os
 
 # Cameras we will use
 cameras = ['left', 'center', 'right']
-cameras_steering_correction = [0.25, 0., -0.25]
+cameras_steering_correction = [0.1, 0., -0.1]
 
 def preprocess(image, top_offset=0.375, bottom_offset=0.125):
     top = int(top_offset * image.shape[0])
@@ -39,8 +39,8 @@ def generate_samples(data, root_path, augment=True):
                     [x1, x2] = np.random.choice(w, 2, replace=False)
                     k = h / (x2 - x1)
                     b = - k * x1
-                    shadow_adjustment = random.uniform(.25, .75)
-                    non_shadow_adjustment = random.uniform(.5, 1.5)
+                    shadow_adjustment = random.uniform(.4, .6)
+                    non_shadow_adjustment = random.uniform(.75, 1.25)
                     for i in range(h):
                         c = int((i - b) / k)
                         # Randomly decrease brightness for shadowed part
@@ -51,7 +51,7 @@ def generate_samples(data, root_path, augment=True):
                             image[i, c:, :] * non_shadow_adjustment
                         )).astype(np.int32)
                 # Randomly shift up and down while preprocessing
-                v_delta = .075 if augment else 0
+                v_delta = .05 if augment else 0
                 image = preprocess(
                     image,
                     top_offset=random.uniform(.375 - v_delta, .375 + v_delta),
