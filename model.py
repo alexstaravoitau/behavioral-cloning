@@ -14,10 +14,8 @@ from pandas.io import parsers
 from data import generate_samples, preprocess
 from weights_logger_callback import WeightsLogger
 
-
 local_project_path = '/'
 local_data_path = os.path.join(local_project_path, 'data')
-
 
 if __name__ == '__main__':
     # Read the data
@@ -42,24 +40,19 @@ if __name__ == '__main__':
     model.add(Dropout(0.5))
     model.add(Dense(10, activation='relu'))
     model.add(Dense(1))
-    #model.load_weights(os.path.join(local_project_path, 'behavioral_cloning.h5'))
-
     model.compile(optimizer=Adam(lr=1e-04), loss='mean_squared_error')
 
     history = model.fit_generator(
         generate_samples(df_train, local_data_path),
         samples_per_epoch=df_train.count()[0],
-        nb_epoch=50,
+        nb_epoch=10,
         validation_data=generate_samples(df_valid, local_data_path, augment=False),
         nb_val_samples=df_valid.count()[0],
-        callbacks=[ProgbarLogger()],
-        callbacks=[ProgbarLogger(), WeightsLogger(root_path=local_project_path)],
-        verbose=0
+        callbacks=[WeightsLogger(root_path=local_project_path)]
     )
 
-    model.save_weights(os.path.join(local_project_path, 'behavioral_cloning.h5'))
-    with open(os.path.join(local_project_path, 'behavioral_cloning.json'), 'w') as file:
+    model.save_weights(os.path.join(local_project_path, 'model.h5'))
+    with open(os.path.join(local_project_path, 'model.json'), 'w') as file:
         file.write(model.to_json())
 
-    print('Model saved.')
     backend.clear_session()
