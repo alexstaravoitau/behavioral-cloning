@@ -13,6 +13,7 @@ from keras import backend
 from sklearn import model_selection
 from pandas.io import parsers
 from data import generate_samples, preprocess
+from weights_logger_callback import WeightsLogger
 
 
 local_project_path = '/'
@@ -53,6 +54,7 @@ if __name__ == '__main__':
         validation_data=generate_samples(df_valid, local_data_path, augment=False),
         nb_val_samples=df_valid.count()[0],
         callbacks=[ProgbarLogger()],
+        callbacks=[ProgbarLogger(), WeightsLogger(root_path=local_project_path)],
         verbose=0
     )
 
