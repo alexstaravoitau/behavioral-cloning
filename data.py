@@ -11,12 +11,19 @@ cameras = ['left', 'center', 'right']
 cameras_steering_correction = [.25, 0., -.25]
 
 def preprocess(image, top_offset=.375, bottom_offset=.125):
+    """
+    Applies preprocession pipeline to an image: crops `top_offset` and `bottom_offset` portions of image, resizes to 32x128 px and scales pixel values to [0, 1].
+    """
     top = int(top_offset * image.shape[0])
     bottom = int(bottom_offset * image.shape[0])
     image = sktransform.resize(image[top:-bottom, :], (32, 128, 3))
     return image
 
 def generate_samples(data, root_path, augment=True):
+    """
+    Keras generator yielding batches of training data.
+    Applies data augmentation pipeline is `augment` is True.
+    """
     while True:
         # Generate random batch of indices
         indices = np.random.permutation(data.count()[0])
@@ -34,14 +41,13 @@ def generate_samples(data, root_path, augment=True):
                 image = mpimg.imread(os.path.join(root_path, data[cameras[camera]].values[i].strip()))
                 angle = data.steering.values[i] + cameras_steering_correction[camera]
                 if augment:
-                    # Add random shadow
+                    # Add random shadow as a vertical slice of image
                     h, w = image.shape[0], image.shape[1]
                     [x1, x2] = np.random.choice(w, 2, replace=False)
                     k = h / (x2 - x1)
                     b = - k * x1
                     for i in range(h):
                         c = int((i - b) / k)
-                        # Randomly decrease brightness for shadowed part
                         image[i, :c, :] = (image[i, :c, :] * .5).astype(np.int32)
                 # Randomly shift up and down while preprocessing
                 v_delta = .05 if augment else 0

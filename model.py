@@ -13,12 +13,14 @@ from weights_logger_callback import WeightsLogger
 local_project_path = '/'
 local_data_path = os.path.join(local_project_path, 'data')
 
+
 if __name__ == '__main__':
     # Read the data
     df = pd.io.parsers.read_csv(os.path.join(local_data_path, 'driving_log.csv'))
     # Split data into training and validation sets
     df_train, df_valid = model_selection.train_test_split(df, test_size=.2)
 
+    # Model architecture
     model = models.Sequential()
     model.add(convolutional.Convolution2D(16, 3, 3, input_shape=(32, 128, 3), activation='relu'))
     model.add(pooling.MaxPooling2D(pool_size=(2, 2)))

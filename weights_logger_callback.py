@@ -4,6 +4,9 @@ import shutil
 
 
 class WeightsLogger(Callback):
+    """
+    Keeps track of model weights by saving them at the end of each epoch.
+    """
 
     def __init__(self, root_path):
         super(WeightsLogger, self).__init__()
