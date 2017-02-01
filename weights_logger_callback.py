@@ -7,7 +7,7 @@ class WeightsLogger(Callback):
 
     def __init__(self, root_path):
         super(WeightsLogger, self).__init__()
-        self.weights_root_path = os.path.join(root_path, 'weights_history/')
+        self.weights_root_path = os.path.join(root_path, 'weights/')
         shutil.rmtree(self.weights_root_path, ignore_errors=True)
         os.makedirs(self.weights_root_path, exist_ok=True)
 
