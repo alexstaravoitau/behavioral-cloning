@@ -90,8 +90,6 @@ ENV/
 /._.DS_Store
 /.idea
 /data
-*.h5
-*.json
 *.ipynb
-/weights_history
+/weights
 /alt_keras_logging.py
