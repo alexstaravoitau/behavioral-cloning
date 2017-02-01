@@ -10,7 +10,6 @@ from io import BytesIO
 import os
 
 from keras.models import model_from_json
-from skimage import transform, exposure
 import warnings
 
 # Fix error with Keras and TensorFlow
@@ -38,10 +37,8 @@ def telemetry(sid, data):
     image = Image.open(BytesIO(base64.b64decode(imgString)))
     image_array = preprocess(np.asarray(image))
     transformed_image_array = image_array[None, :, :, :]
-    # This model currently assumes that the features of the model are just the images. Feel free to change this.
-    steering_angle = float(model.predict(transformed_image_array, batch_size=1)) * 1.4
-    # The driving model currently just outputs a constant throttle. Feel free to edit this.
-    throttle = 0.2
+    steering_angle = float(model.predict(transformed_image_array, batch_size=1))
+    throttle = .2 if float(speed) > 5 else 1.
     print(steering_angle, throttle)
     send_control(steering_angle, throttle)
 
