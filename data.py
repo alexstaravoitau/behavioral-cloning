@@ -1,5 +1,5 @@
 import numpy as np
-from skimage import transform, exposure
+import skimage.transform as sktransform
 import random
 import matplotlib.image as mpimg
 import warnings
@@ -13,7 +13,7 @@ cameras_steering_correction = [0.1, 0., -0.1]
 def preprocess(image, top_offset=0.375, bottom_offset=0.125):
     top = int(top_offset * image.shape[0])
     bottom = int(bottom_offset * image.shape[0])
-    image = transform.resize(image[top:-bottom, :], (66, 200, 3))
+    image = sktransform.resize(image[top:-bottom, :], (66, 200, 3))
     return image
 
 def generate_samples(data, root_path, augment=True):
