@@ -2,7 +2,6 @@ import numpy as np
 import skimage.transform as sktransform
 import random
 import matplotlib.image as mpimg
-import warnings
 import os
 
 
