@@ -12,7 +12,8 @@ cameras_steering_correction = [.25, 0., -.25]
 
 def preprocess(image, top_offset=.375, bottom_offset=.125):
     """
-    Applies preprocession pipeline to an image: crops `top_offset` and `bottom_offset` portions of image, resizes to 32x128 px and scales pixel values to [0, 1].
+    Applies preprocessing pipeline to an image: crops `top_offset` and `bottom_offset`
+    portions of image, resizes to 32x128 px and scales pixel values to [0, 1].
     """
     top = int(top_offset * image.shape[0])
     bottom = int(bottom_offset * image.shape[0])
@@ -21,8 +22,8 @@ def preprocess(image, top_offset=.375, bottom_offset=.125):
 
 def generate_samples(data, root_path, augment=True):
     """
-    Keras generator yielding batches of training data.
-    Applies data augmentation pipeline is `augment` is True.
+    Keras generator yielding batches of training/validation data.
+    Applies data augmentation pipeline if `augment` is True.
     """
     while True:
         # Generate random batch of indices
