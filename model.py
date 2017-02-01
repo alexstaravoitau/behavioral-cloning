@@ -38,11 +38,11 @@ if __name__ == '__main__':
 
     history = model.fit_generator(
         generate_samples(df_train, local_data_path),
-        samples_per_epoch=df_train.count()[0],
-        nb_epoch=10,
+        samples_per_epoch=df_train.shape[0],
+        nb_epoch=20,
         validation_data=generate_samples(df_valid, local_data_path, augment=False),
-        nb_val_samples=df_valid.count()[0],
         callbacks=[WeightsLogger(root_path=local_project_path)]
+        nb_val_samples=df_valid.shape[0],
     )
 
     with open(os.path.join(local_project_path, 'model.json'), 'w') as file:
