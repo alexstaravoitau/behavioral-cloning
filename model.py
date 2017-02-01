@@ -15,7 +15,7 @@ local_data_path = os.path.join(local_project_path, 'data')
 
 if __name__ == '__main__':
     # Read the data
-    df = pd.io.parsers.read_csv(os.path.join(local_data_path, 'driving_log_balanced_n100_bins1000.csv'))
+    df = pd.io.parsers.read_csv(os.path.join(local_data_path, 'driving_log.csv'))
     # Split data into training and validation sets
     df_train, df_valid = model_selection.train_test_split(df, test_size=.2)
 
