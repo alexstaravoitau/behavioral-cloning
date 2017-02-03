@@ -127,7 +127,7 @@ The car manages to drive just fine on both tracks pretty much endlessly. It rare
 
 You can check out a longer [video compilation](https://www.youtube.com/watch?v=J72Q9A0GeEo) of the car driving itself on both tracks.
 
-Clearly this is a very basic example of end-to-end learning for self-driving cars, nevertheless it should give an idea of what such models are capable of, even considering all limitations of training and validating solely on a virtual driving simulator.
+Clearly this is a very basic example of end-to-end learning for self-driving cars, nevertheless it should give a rough idea of what these models are capable of, even considering all limitations of training and validating solely on a virtual driving simulator.
 
 
 
