@@ -81,7 +81,7 @@ To make a better sense of it, let's consider an example of a **single recorded s
 
 Augmentation pipeline is applied using a Keras generator, which lets us do it in real-time on CPU while GPU is busy backpropagating!
 
-We then preprocess each frame by cropping top and bottom of the image and resizing to a shape our model expects (32×128×3, RGB pixel intensities of a 32×128 image). The resizing operation also takes care of scaling pixel values to [0, 1].
+We then preprocess each frame by cropping top and bottom of the image and resizing to a shape our model expects (`32×128×3`, RGB pixel intensities of a 32×128 image). The resizing operation also takes care of scaling pixel values to `[0, 1]`.
 
 ```
 image = skimage.transform.resize(image, (32, 128, 3))
