@@ -12,7 +12,7 @@ I have collected a dataset containing approximately **1 hour worth of driving da
 
 Just as one would expect, resulting dataset was extremely unbalanced and had a lot of examples with steering angles close to `0`. So I applied a designated random sampling which ensured that the data is as balanced across steering angles as possible. This process included splitting steering angles into `n` bins and using at most `200` frames for each bin:
 
-```
+```python
 df = read_csv('data/driving_log.csv')
 
 balanced = pd.DataFrame() 	# Balanced dataset
@@ -41,7 +41,7 @@ Please, mind that we are balancing dataset across _absolute_ values, as by apply
 After balancing ~1 hour worth of driving data we ended up with **7698 samples**, which most likely wouldn't be enough for the model to generalise well. However, as many pointed out, there a couple of augmentation tricks that should let you extend the dataset significantly:
 
 - **Left and right cameras**. Along with each sample we receive frames from 3 camera positions: left, center and right. Although we are only going to use central camera while driving, we can still use left and right cameras data during training after applying steering angle correction, increasing number of examples by a factor of 3.
-```
+```python
 cameras = ['left', 'center', 'right']
 steering_correction = [.25, 0., -.25]
 camera = np.random.randint(len(cameras))
@@ -49,19 +49,19 @@ image = mpimg.imread(data[cameras[camera]].values[i])
 angle = data.steering.values[i] + steering_correction[camera]
 ```
 - **Horizontal flip**. For every batch we flip half of the frames horizontally and change the sign of the steering angle, thus yet increasing number of examples by a factor of 2.
-```
+```python
 flip_indices = random.sample(range(x.shape[0]), int(x.shape[0] / 2))
 x[flip_indices] = x[flip_indices, :, ::-1, :]
 y[flip_indices] = -y[flip_indices]
 ```
 - **Vertical shift**. We cut out insignificant top and bottom portions of the image during preprocessing, and choosing the amount of frame to crop at random should increase the ability of the model to generalise.
-```
+```python
 top = int(random.uniform(.325, .425) * image.shape[0])
 bottom = int(random.uniform(.075, .175) * image.shape[0])
 image = image[top:-bottom, :]
 ```
 - **Random shadow**. We add a random vertical "shadow" by decreasing brightness of a frame slice, hoping to make the model invariant to actual shadows on the road.
-```
+```python
 h, w = image.shape[0], image.shape[1]
 [x1, x2] = np.random.choice(w, 2, replace=False)
 k = h / (x2 - x1)
@@ -70,6 +70,13 @@ for i in range(h):
     c = int((i - b) / k)
     image[i, :c, :] = (image[i, :c, :] * .5).astype(np.int32)
 ```
+
+We then preprocess each frame by cropping top and bottom of the image and resizing to a shape our model expects (`32×128×3`, RGB pixel intensities of a 32×128 image). The resizing operation also takes care of scaling pixel values to `[0, 1]`.
+
+```python
+image = skimage.transform.resize(image, (32, 128, 3))
+```
+
 To make a better sense of it, let's consider an example of a **single recorded sample** that we turn into **16 training samples** by using frames from all three cameras and applying aforementioned augmentation pipeline.
 
 <p align="center">
@@ -81,12 +88,6 @@ To make a better sense of it, let's consider an example of a **single recorded s
 
 Augmentation pipeline is applied using a Keras generator, which lets us do it in real-time on CPU while GPU is busy backpropagating!
 
-We then preprocess each frame by cropping top and bottom of the image and resizing to a shape our model expects (`32×128×3`, RGB pixel intensities of a 32×128 image). The resizing operation also takes care of scaling pixel values to `[0, 1]`.
-
-```
-image = skimage.transform.resize(image, (32, 128, 3))
-```
-
 ## Model 
 
 I started with the model described in [Nvidia paper](https://arxiv.org/abs/1604.07316) and kept simplifying and optimising it while making sure it performs well on both tracks. It was clear we wouldn't need that complicated model, as the data we are working with is way simpler and much more constrained than the one Nvidia team had to deal with when running their model. Eventually I settled on a fairly simple architecture with **3 convolutional layers and 3 fully connected layers**.
@@ -97,7 +98,7 @@ I started with the model described in [Nvidia paper](https://arxiv.org/abs/1604.
 
 This model can be very briefly encoded with Keras.
 
-```
+```python
 from keras import models
 from keras.layers import core, convolutional, pooling
 
