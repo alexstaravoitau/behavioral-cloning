@@ -2,6 +2,17 @@
 
 The goal of this project was to train a end-to-end deep learning model that would let a car drive itself around the track in a driving simulator. 
 
+## Project structure
+
+| File                         | Description                                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------------- |
+| `data.py`                    | Methods related to data augmentation, preprocessing and batching.                  |
+| `model.py`                   | Implements model architecture and runs the training pipeline.                      |
+| `model.json`                 | JSON file containing model architecture in a format Keras understands.             |
+| `model.h5`                   | Model weights.                                                                     |
+| `weights_logger_callback.py` | Implements a Keras callback that keeps track of model weights throughout training. |
+| `drive.py`                   | Implements driving simulator callbacks, essentially communicates with the driving simulator app providing model predictions based on real-time data simulator app is sending. |
+
 ## Data collection and balancing
 
 The provided driving simulator had two different tracks. One of them was used for collecting training data, and the other one — never seen by the model — as a substitute for test set.
