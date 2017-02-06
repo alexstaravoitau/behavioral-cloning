@@ -1,6 +1,6 @@
 # End to End Learning for Self-Driving Cars
 
-The goal of this project was to train a end-to-end deep learning model that would let a car drive itself around the track in a driving simulator. 
+The goal of this project was to train a end-to-end deep learning model that would let a car drive itself around the track in a driving simulator. [Read full article here](http://navoshta.com/end-to-end-deep-learning/).
 
 ## Project structure
 
